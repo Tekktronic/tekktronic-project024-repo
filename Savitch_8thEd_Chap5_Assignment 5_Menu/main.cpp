@@ -43,6 +43,14 @@ void Output(float &, float &, char &, char); //Calls Convert()function and outpu
 int Prob15(); //Runs Problem 15
 bool Shoot(bool &, float &); //Shoots at the target
 char StartDuel(bool, bool, bool, float, float, float, char); //Simulates the duel
+int Prob16(); //Runs Problem 16
+int Prob17(); //Runs problem 17
+void GetInput(int &, int &, int &); //Gets the user input
+bool isLeap(int); //returns true if year is Leap, false if not
+int v_Cent(int); //returns century value
+int v_Year(int); //returns year value
+int v_Month(int, int); //returns month value
+int DayOfWk(int, int, int); //returns the day of the week using century, year, and month values
 //Execution begins HERE
 int main(int argc, char** argv){
     //Your code here
@@ -66,14 +74,14 @@ int main(int argc, char** argv){
         cout << "**            6. Problem 11 Solution             **\n";
         cout << "**            7. Problem 12 Solution             **\n";
         cout << "**            8. Problem 15 Solution             **\n";
-        cout << "**            9. (Empty)                         **\n";
-        cout << "**            10. (Empty)                        **\n";
+        cout << "**            9. Problem 16 Solution             **\n";
+        cout << "**            10. Problem 17 Solution            **\n";
         cout << "**************************************************\n";
         cout << "\nWhich program would you like to run? ";
         cout << "Enter the number of the program you wish to run: ";
         cin >> mChoice;
         switch(mChoice[0]){
-            case '1': if (mChoice[1] == '0') cout << "(Empty)\n"; //function callhere! remove the cout line later
+            case '1': if (mChoice[1] == '0') Prob17();
                       else Prob6();
                       break;
             case '2': Prob7(); break;
@@ -83,8 +91,8 @@ int main(int argc, char** argv){
             case '6': Prob11(); break;
             case '7': Prob12(); break;
             case '8': Prob15(); break;
-            case '9': cout << "(Empty)\n"; break; //code here! remove this line
-            case '0': cout << "(Empty)\n"; break; //code here! remove this line
+            case '9': Prob16(); break;
+            default: break;
         }
         cout << "Do you wish to run another program(Y/N)? ";
         cin >> mChoice;
@@ -525,16 +533,12 @@ int Prob15(){
         int a_Wins = 0, b_Wins = 0, c_Wins = 0, n_Runs = 1000;
         bool a_Alive = true, b_Alive = true, c_Alive = true;
         float a_Acc = 0.33f, b_Acc = 0.5f, c_Acc = 1.0f;
-        cout << "Choose a condition:\n"; //Prompt for input
-        cout << "1. Obvious strategy\n";
-        cout << "2. Counterintuitive strategy\n";
-        cin >> choice; //Takes the choice
         while(choice != '1' && choice != '2'){
-            cout << "Invalid choice! Try again.\n";
             cout << "Choose a condition:\n"; //Prompt for input
             cout << "1. Obvious strategy\n";
             cout << "2. Counterintuitive strategy\n";
             cin >> choice; //Takes the choice
+            if(choice != '1' && choice != '2') cout << "Invalid choice! Try again.\n";
         }
         for(int Ctr = 1; Ctr <= n_Runs; Ctr++){
             Winner = '\0';
@@ -582,55 +586,191 @@ char StartDuel(bool a_Alive, bool b_Alive, bool c_Alive, float a_Acc, float b_Ac
             }
             else a_Acc = 0.33f;
             if(c_Alive){
-                cout << "Aaron shoots Charlie.\n";
+                //cout << "Aaron shoots Charlie. ";
                 Shoot(c_Alive, a_Acc);
                 break;
             }
             else if(b_Alive){
-                cout << "Aaron shoots Bob.\n";;
+               // cout << "Aaron shoots Bob. ";
                 Shoot(b_Alive, a_Acc);
                 break;
             }
             else{
-                cout << "Aaron wins!\n";
+              //  cout << "Aaron wins!\n";
                 Winner = 'A';
                 break;
             }
         }
         while(b_Alive){
             if(c_Alive){
-                    cout << "Bob shoots Charlie.\n";
+              //      cout << "Bob shoots Charlie. ";
                 Shoot(c_Alive, b_Acc);
                 break;
             }
             else if(a_Alive){
-                cout << "Bob shoots Aaron.\n";
+               // cout << "Bob shoots Aaron. ";
                 Shoot(a_Alive, b_Acc);
                 break;
             }
             else{
-                cout << "Bob wins!\n";
+             //   cout << "Bob wins!\n";
                 Winner = 'B';
                 break;
             }
         }
         while(c_Alive){
             if(b_Alive){
-                cout << "Charlie shoots Bob.\n";
+              //  cout << "Charlie shoots Bob. ";
                 Shoot(b_Alive, c_Acc);
                 break;
             }
             else if(a_Alive){
-                cout << "Charlie shoots Aaron.\n";
+              //  cout << "Charlie shoots Aaron. ";
                 Shoot(a_Alive, c_Acc);
                 break;
             }
             else{
-                cout << "Charlie wins!\n";
+              //  cout << "Charlie wins!\n";
                 Winner = 'C';
                 break;
             }
         }
     }while(Winner == '\0');
     return Winner;
+}
+//Problem 16 and Problem 17 functions
+int Prob16(){
+    //Declare variables
+    bool isValid = false;
+    int month, day, year, WkDay;
+    //input values
+    GetInput(month, day, year);
+    cout << "isLeap(year) = " << isLeap(year) << endl; //stub to see if isLeap() is returning the correct value
+    if(year > -1){
+        if(month > 0 && month < 13){
+            switch(month){
+                case 1: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 2: {
+                    if(isLeap(year)){
+                        (day > 0 && day < 30) ? isValid = true : isValid = false; break;
+                    }
+                    else (day > 0 && day < 29) ? isValid = true : isValid = false; break;
+                }
+                case 3: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 4: (day > 0 && day < 31) ? isValid = true : isValid = false; break;
+                case 5: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 6: (day > 0 && day < 31) ? isValid = true : isValid = false; break;
+                case 7: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 8: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 9: (day > 0 && day < 31) ? isValid = true : isValid = false; break;
+                case 10: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 11: (day > 0 && day < 31) ? isValid = true : isValid = false; break;
+                case 12: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                default: isValid = false;
+            }
+        }
+        else isValid = false;
+    }
+    else isValid = false;
+    cout << "v_Cent = " << v_Cent(year) << endl; //stub to test if v_Cent() returns the correct value
+    cout << "v_Year = " << v_Cent(year) << endl; //stub to test if v_Year() returns the correct value
+    cout << "v_Month = " << v_Cent(year) << endl; //stub to test if v_Month() returns the correct value
+    if(isValid)  WkDay = (v_Cent(year) + v_Year(year) + v_Month(month, year) + day) % 7;
+    else WkDay = -1;
+    cout << "Day of the Week = " << WkDay << endl;
+    //Execution ends HERE
+    return 0;
+}
+int Prob17(){
+    //Declare variables
+    bool isValid = false;
+    int month, day, year;
+    //input values
+    GetInput(month, day, year);
+    cout << "isLeap(year) = " << isLeap(year) << endl; //stub to see if isLeap() is returning the correct value
+    cout << "Day of the Week = " << DayOfWk(month, day, year) << endl;
+    //Execution ends HERE
+    return 0;
+}
+bool isLeap(int year){
+    if(((year % 400) == 0) || (((year % 4) == 0)&&((year % 100) != 0))) return true;
+    else return false;
+}
+int v_Cent(int year){
+    int c_yr = year /100;
+    c_yr = c_yr % 4;
+    c_yr = (3 - c_yr) * 2;
+    return c_yr;
+}
+int v_Year(int year){
+    int yr;
+    year -= ((year /1000) * 1000);
+    if(year > 99){
+        year -= ((year /100) * 100);
+    }
+    yr = year /4;
+    yr += year;
+    return yr;
+}
+int v_Month(int month, int year){
+    switch(month){
+        case 1:{
+            if(isLeap(year)) return 6; 
+            else return 0;
+        }
+        case 2:{
+            if(isLeap(year)) return 2;
+            else return 3;
+        }
+        case 3: return 3;
+        case 4: return 6;
+        case 5: return 1;
+        case 6: return 4;
+        case 7: return 6;
+        case 8: return 2;
+        case 9: return 5;
+        case 10: return 0;
+        case 11: return 3;
+        case 12: return 5;
+        default: return -1;
+    }
+}
+int DayOfWk(int month, int day, int year){
+    bool isValid = false;
+    if(year > -1){
+        if(month > 0 && month < 13){
+            switch(month){
+                case 1: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 2: {
+                    if(isLeap(year)){
+                        (day > 0 && day < 30) ? isValid = true : isValid = false; break;
+                    }
+                    else (day > 0 && day < 29) ? isValid = true : isValid = false; break;
+                }
+                case 3: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 4: (day > 0 && day < 31) ? isValid = true : isValid = false; break;
+                case 5: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 6: (day > 0 && day < 31) ? isValid = true : isValid = false; break;
+                case 7: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 8: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 9: (day > 0 && day < 31) ? isValid = true : isValid = false; break;
+                case 10: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                case 11: (day > 0 && day < 31) ? isValid = true : isValid = false; break;
+                case 12: (day > 0 && day < 32) ? isValid = true : isValid = false; break;
+                default: isValid = false;
+            }
+        }
+        else isValid = false;
+    }
+    else isValid = false;
+    cout << "v_Cent = " << v_Cent(year) << endl; //stub to test if v_Cent() returns the correct value
+    cout << "v_Year = " << v_Cent(year) << endl; //stub to test if v_Year() returns the correct value
+    cout << "v_Month = " << v_Cent(year) << endl; //stub to test if v_Month() returns the correct value
+    if(isValid) return (v_Cent(year) + v_Year(year) + v_Month(month, year) + day) % 7;
+    else return -1;
+}
+void GetInput(int &month, int &day, int &year){
+    char slash;
+    cout << "Enter the date in (MM/DD/YYYY) format: ";
+    cin >> month >> setw(2) >> slash >> day >> setw(2) >> slash >> year;
 }
