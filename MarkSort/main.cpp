@@ -14,9 +14,6 @@ using namespace std;
 //Function prototypes
 void fillAR(int[], int);
 void printAR(int[], int, int);
-void swap1(int &, int &);
-void swap2(int &, int &);
-void listSM(int[], int &, int &);
 void marksort(int[], int);
 //Execution begins HERE
 int main(int argc, char** argv){
@@ -48,24 +45,15 @@ void printAR(int num[], int n, int perline){
     }
     cout << endl;
 }
-void swap1(int &num1, int &num2){
-    int tmp = num1;
-    num1 = num2;
-    num2 = tmp;
-}
-void swap2(int &num1, int &num2){
-    num1 = num1^num2;
-    num2 = num1^num2;
-    num1 = num1^num2;
-}
-void listSM(int num[], int &n, int &pos){
-    for(int i = pos+1; i < n; i++){
-        //(num[pos] > num[i]) swap1(num[pos], num[i]);
-        if(num[pos] > num[i]) swap2(num[pos], num[i]);
-    }
-}
 void marksort(int num[], int n){
     for(int i = 0; i < n - 1; i++){
-        listSM(num, n, i);
+        int pos = i;
+        for(int ctr = pos+1; ctr < n; ctr++ ){
+            if(num[pos] > num[ctr]){
+                num[pos] = num[pos]^num[ctr];
+                num[ctr] = num[pos]^num[ctr];
+                num[pos] = num[pos]^num[ctr];
+            }
+        }
     }
 }
